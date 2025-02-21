@@ -1,0 +1,57 @@
+//3abaz mli7 les button
+//yaaw 3abz mli7 khatch tinkercad t9il
+
+#include <Wire.h>
+#include <Adafruit_LiquidCrystal.h>
+int song = 9;
+int button = 7;
+int buttonstate = 1;
+Adafruit_LiquidCrystal lcd(0);
+
+void setup() {
+  pinMode(song,OUTPUT);// Set LED pin as output
+   pinMode(button,INPUT);
+  Serial.begin(9600); // UART initialization
+  lcd.begin(16, 2);
+
+  lcd.print("STAY TUNED");
+  lcd.setCursor(0,0);
+}
+
+void loop() {
+   buttonstate = digitalRead(button);
+   if (buttonstate == HIGH) {
+     lcd.clear();
+      lcd.print("DONE");
+     digitalWrite(song, LOW);
+     delay(1000);
+     lcd.clear();
+     lcd.print("STAY TUNED");
+    }
+  if (Serial.available() > 0) { // Check if data is available
+    String receivedData = Serial.readStringUntil('\n'); // Read incoming data
+    receivedData.trim(); // Remove extra spaces/newlines
+
+    if (receivedData == "ON15") {
+      lcd.clear();
+      lcd.print("EMG BLOCK 15");
+      digitalWrite(song, HIGH);// Turn LED ON
+    } else if (receivedData == "ON24") {
+     lcd.clear();
+      lcd.print("EMG BLOCK 24");
+       digitalWrite(song, HIGH);
+     delay(1000);} // Turn LED OFF
+       else if (receivedData == "ON41") {
+         lcd.clear();
+         lcd.print("EMG BLOCK 41");
+       digitalWrite(song, HIGH);
+        delay(3000);} // Turn LED OFF
+        else if (receivedData == "ON50") {
+          lcd.clear();
+          lcd.print("EMG BLOCK 50");
+          digitalWrite(song, HIGH);// Turn LED OFF
+          delay(3000);
+    } 
+   
+  }
+}
